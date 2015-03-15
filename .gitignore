@@ -1,0 +1,13 @@
+/target/
+/.settings
+/.classpath
+/.project
+/logs
+/bundles
+/src/main/generated/.gitignore
+/dependency-reduced-pom.xml
+*.iml
+*.local
+*.log
+*.bz2
+.DS_Store
