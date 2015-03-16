@@ -338,6 +338,7 @@ public class LocalCSVDataStream implements DataStream<CSVStreamData> {
     public DataStream<CSVStreamData> mapTo(String sourceField, String newField, Function<String, String> function) {
 
         MapFieldFunction func = new MapFieldFunction(sourceField, newField);
+        func.setFunction(function);
         Pipe pipe = new Each(pipes.getLast(), Fields.ALL, func);
         pipes.add(pipe);
         return this;

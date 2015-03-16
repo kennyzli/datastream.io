@@ -8,7 +8,6 @@ import cascading.scheme.Scheme;
 import cascading.scheme.local.TextDelimited;
 import cascading.tap.Tap;
 import cascading.tap.local.FileTap;
-import cascading.tuple.Fields;
 
 public class LocalCSVStreamSource implements StreamSource {
 
@@ -28,7 +27,8 @@ public class LocalCSVStreamSource implements StreamSource {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     Tap getSourceTap() {
-        Scheme scheme = new TextDelimited(Fields.ALL, ",");
+        Scheme scheme = new TextDelimited(true, ",");
+
         Tap tap = new FileTap(scheme, location.getPath());
         return tap;
     }

@@ -34,8 +34,6 @@ public class localStreamTest {
     }
 
     @Test
-    // test the mapped to field
-    // TODO: working in progress
     public void testDataStreaMapWithLocalMode() throws URISyntaxException {
         DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
                 RUNTIME_MODE.LOCAL_MODE);
