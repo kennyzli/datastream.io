@@ -48,7 +48,6 @@ public class MapFieldFunction<Context> extends DataFunction<Context, String, Str
         Tuple ctuple = entry.getTupleCopy();
         outGoingTupleEntry.setTuple(ctuple);
         outGoingTupleEntry.setString(newFieldName, getFunction().apply(entry.getString(sourceFieldName)));
-        // outGoingTupleEntry.setString(newFieldName, "USA");
 
         TupleEntryCollector collector = functionCall.getOutputCollector();
         collector.setFields(outGoingFields);

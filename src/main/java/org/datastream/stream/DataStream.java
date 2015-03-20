@@ -1,6 +1,7 @@
 package org.datastream.stream;
 
 import java.net.URI;
+import java.util.Comparator;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -16,15 +17,6 @@ import java.util.stream.Stream;
  */
 public interface DataStream<T extends StreamData> extends Stream<T> {
     /**
-     * Return the Stream<T> contains the size of the elements
-     * 
-     * @param num
-     *            that the stream need to return
-     * @return the Stream contains the size of elements
-     */
-    public DataStream<T> head(long num);
-
-    /**
      * Return the tails of the elements
      * 
      * @param the
@@ -32,6 +24,28 @@ public interface DataStream<T extends StreamData> extends Stream<T> {
      * @return the Stream elements contains the number of the elements
      */
     public DataStream<T> tail(long num);
+
+    /**
+     * sort the stream
+     * 
+     */
+    @Override
+    public DataStream<T> sorted();
+
+    /**
+     * sort the stream with the compared function
+     * 
+     */
+    @Override
+    public DataStream<T> sorted(Comparator<? super T> comparator);
+
+    /**
+     * make the distinct public and chanage the datatype to be DataStream
+     * 
+     * 
+     */
+    @Override
+    public DataStream<T> distinct();
 
     /**
      * project the columns
@@ -78,7 +92,6 @@ public interface DataStream<T extends StreamData> extends Stream<T> {
      */
     public DataStream<T> mapTo(String sourceField, String newField, Function<String, String> function);
 
-
     /**
      * Map the field with new value
      * 
@@ -102,8 +115,7 @@ public interface DataStream<T extends StreamData> extends Stream<T> {
      * @return new Stream
      */
     public DataStream<T> rightJoin(Stream<T> rightStream);
-    
-    
+
     /**
      * outter join the stream and return the new stream with the element type <T>
      * 
@@ -124,4 +136,5 @@ public interface DataStream<T extends StreamData> extends Stream<T> {
      *            output URI location
      */
     public void writeTo(URI location);
+
 }

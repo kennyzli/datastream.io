@@ -32,13 +32,23 @@ import cascading.flow.FlowDef;
 import cascading.flow.local.LocalFlowConnector;
 import cascading.pipe.Each;
 import cascading.pipe.Pipe;
+import cascading.pipe.assembly.Discard;
 import cascading.pipe.assembly.Rename;
+import cascading.pipe.assembly.Retain;
+import cascading.pipe.assembly.Unique;
 import cascading.scheme.Scheme;
 import cascading.scheme.local.TextDelimited;
 import cascading.tap.Tap;
 import cascading.tap.local.FileTap;
 import cascading.tuple.Fields;
 
+/**
+ * The local csv dataStream implementation which is able to provide the solid implementation for the client
+ * 
+ * 
+ * @author kenny.li
+ *
+ */
 public class LocalCSVDataStream implements DataStream<CSVStreamData> {
     private LocalCSVStreamSource source;
     private Pipe sourcePipe;
@@ -70,61 +80,27 @@ public class LocalCSVDataStream implements DataStream<CSVStreamData> {
     }
 
     @Override
-    public IntStream mapToInt(ToIntFunction<? super CSVStreamData> mapper) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public LongStream mapToLong(ToLongFunction<? super CSVStreamData> mapper) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public DoubleStream mapToDouble(ToDoubleFunction<? super CSVStreamData> mapper) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public <R> Stream<R> flatMap(Function<? super CSVStreamData, ? extends Stream<? extends R>> mapper) {
         // TODO Auto-generated method stub
         return null;
     }
 
+
     @Override
-    public IntStream flatMapToInt(Function<? super CSVStreamData, ? extends IntStream> mapper) {
+    public DataStream<CSVStreamData> distinct() {
+        Unique unique = new Unique(pipes.getLast(), Fields.ALL);
+        pipes.push(unique);
+        return this;
+    }
+
+    @Override
+    public DataStream<CSVStreamData> sorted() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public LongStream flatMapToLong(Function<? super CSVStreamData, ? extends LongStream> mapper) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public DoubleStream flatMapToDouble(Function<? super CSVStreamData, ? extends DoubleStream> mapper) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Stream<CSVStreamData> distinct() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Stream<CSVStreamData> sorted() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Stream<CSVStreamData> sorted(Comparator<? super CSVStreamData> comparator) {
+    public DataStream<CSVStreamData> sorted(Comparator<? super CSVStreamData> comparator) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -264,7 +240,6 @@ public class LocalCSVDataStream implements DataStream<CSVStreamData> {
 
     @Override
     public boolean isParallel() {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -276,8 +251,8 @@ public class LocalCSVDataStream implements DataStream<CSVStreamData> {
 
     @Override
     public Stream<CSVStreamData> parallel() {
-        // TODO Auto-generated method stub
-        return null;
+        // No effect
+        return this;
     }
 
     @Override
@@ -299,27 +274,31 @@ public class LocalCSVDataStream implements DataStream<CSVStreamData> {
     }
 
     @Override
-    public DataStream<CSVStreamData> head(long num) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public DataStream<CSVStreamData> tail(long num) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public DataStream<CSVStreamData> project(String... fields) {
-        // TODO Auto-generated method stub
-        return null;
+    public DataStream<CSVStreamData> project(String... fieldNames) {
+        Fields fields = new Fields();
+        for (String fieldName : fieldNames) {
+            fields = fields.append(new Fields(fieldName));
+        }
+        Retain retain = new Retain(pipes.getLast(), fields);
+        pipes.add(retain);
+        return this;
     }
 
     @Override
-    public DataStream<CSVStreamData> discard(String... fields) {
-        // TODO Auto-generated method stub
-        return null;
+    public DataStream<CSVStreamData> discard(String... fieldsName) {
+        Fields fields = new Fields();
+        for (String fieldName : fieldsName) {
+            fields = fields.append(new Fields(fieldName));
+        }
+        Discard discard = new Discard(pipes.getLast(), fields);
+        pipes.add(discard);
+        return this;
     }
 
     @Override
@@ -375,13 +354,43 @@ public class LocalCSVDataStream implements DataStream<CSVStreamData> {
 
     @Override
     public void writeTo(URI location) {
-        Scheme scheme = new TextDelimited();
+        Scheme scheme = new TextDelimited(Fields.ALL, ",", "'");
         Tap sinkTap = new FileTap(scheme, location.getPath());
         flowDef = flowDef.addSource(sourcePipe, source.getSourceTap())
                 .addTailSink(pipes.getLast(), sinkTap).setName(name);
         assert flowDef != null;
         Flow flow = new LocalFlowConnector().connect(flowDef);
         flow.complete();
+    }
+
+    @Override
+    public IntStream mapToInt(ToIntFunction<? super CSVStreamData> mapper) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public LongStream mapToLong(ToLongFunction<? super CSVStreamData> mapper) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public DoubleStream mapToDouble(ToDoubleFunction<? super CSVStreamData> mapper) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public IntStream flatMapToInt(Function<? super CSVStreamData, ? extends IntStream> mapper) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public LongStream flatMapToLong(Function<? super CSVStreamData, ? extends LongStream> mapper) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public DoubleStream flatMapToDouble(Function<? super CSVStreamData, ? extends DoubleStream> mapper) {
+        throw new UnsupportedOperationException();
     }
 
 }

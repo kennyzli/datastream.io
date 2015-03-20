@@ -24,7 +24,7 @@ public class localStreamTest {
                 RUNTIME_MODE.LOCAL_MODE);
         assertNotNull(builder.source(new URI("data/data.dat")).fieldSeparator(",").build());
     }
-    
+
     @Test
     public void testDataStreamCopyWithLocalMode() throws URISyntaxException {
         DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
@@ -40,4 +40,37 @@ public class localStreamTest {
         DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
         stream.mapTo("county", "OtherCountry", x -> x + ":newData").writeTo(new URI("data/output/mapped.dat"));
     }
+
+    @Test
+    public void testDataStreamtDinstinctWithLocalMode() throws URISyntaxException {
+        DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
+                RUNTIME_MODE.LOCAL_MODE);
+        DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
+        stream.distinct().writeTo(new URI("data/output/distinct.dat"));
+    }
+
+    @Test
+    public void testDataStreamProjectWithLocalMode() throws URISyntaxException {
+        DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
+                RUNTIME_MODE.LOCAL_MODE);
+        DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
+        stream.project("county").writeTo(new URI("data/output/project.csv"));
+    }
+
+    @Test
+    public void testDataStreamDiscardWithLocalMode() throws URISyntaxException {
+        DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
+                RUNTIME_MODE.LOCAL_MODE);
+        DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
+        stream.discard("county", "statecode").writeTo(new URI("data/output/discard.csv"));
+    }
+
+    public void testDataStreamSortedWithLocalMode() throws URISyntaxException {
+        
+        DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
+                RUNTIME_MODE.LOCAL_MODE);
+        DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
+        stream.sorted().writeTo(new URI("data/output/sorted.dat"));
+    }
+
 }
