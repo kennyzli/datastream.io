@@ -34,7 +34,7 @@ public class localStreamTest {
     }
 
     @Test
-    public void testDataStreaMapWithLocalMode() throws URISyntaxException {
+    public void testDataStreamMapWithLocalMode() throws URISyntaxException {
         DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
                 RUNTIME_MODE.LOCAL_MODE);
         DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
@@ -80,7 +80,6 @@ public class localStreamTest {
         DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
         stream.debug()
                 .writeTo(new URI("data/output/sorted.csv"));
-
     }
 
 }

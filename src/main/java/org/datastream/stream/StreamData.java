@@ -9,7 +9,7 @@ import java.util.List;
  *
  */
 public interface StreamData {
-    List<String> getColumnsNames();
+    List<Column> getColumns();
 
-    List<String> getColumsValues();
+    void setColumns(List<Column> cols);
 }

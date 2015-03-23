@@ -15,14 +15,41 @@ import java.util.function.Predicate;
  * @param <T>
  */
 public interface DataStream<T> {
+    
     /**
-     * Return the tails of the elements
+     * Group by data fields list
      * 
-     * @param the
-     *            number of the tails elements
-     * @return the Stream elements contains the number of the elements
+     * 
+     * @param fields
+     * @return
      */
-    public DataStream<T> tail(long num);
+    public GroupByDataStream<T> groupBy(String... fields);
+
+    /**
+     * The sample percentage
+     * 
+     * 
+     * @param percentage
+     * @return
+     */
+    public DataStream<T> sample(double percentage);
+
+    /**
+     * The head of number of records
+     * 
+     * @param num
+     * @return
+     */
+    public DataStream<T> head(long num);
+
+    /**
+     * The free style data which will accept all the line records and return the output
+     * 
+     * 
+     * @param data
+     * @return
+     */
+    public DataStream<T> process(Function<T, T> func);
 
     /**
      * sort the stream with the compared function
@@ -133,14 +160,6 @@ public interface DataStream<T> {
      * @return
      */
     DataStream<T> map(String fieldName, Function<String, String> mapper);
-
-    /**
-     * reduce the records
-     * 
-     * @param func
-     * @return
-     */
-    DataStream<T> reduce(Function<String, String> func);
 
     /**
      * flat map the data
