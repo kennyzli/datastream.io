@@ -1,27 +1,9 @@
 package org.datastream.stream.impl;
 
 import java.net.URI;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Optional;
-import java.util.Spliterator;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.BinaryOperator;
-import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.IntFunction;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.function.ToDoubleFunction;
-import java.util.function.ToIntFunction;
-import java.util.function.ToLongFunction;
-import java.util.stream.Collector;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
-import java.util.stream.Stream;
 
 import org.datastream.stream.DataStream;
 import org.datastream.stream.func.DataFilter;
@@ -30,6 +12,7 @@ import org.datastream.stream.func.MapFieldFunction;
 import cascading.flow.Flow;
 import cascading.flow.FlowDef;
 import cascading.flow.local.LocalFlowConnector;
+import cascading.operation.DebugLevel;
 import cascading.pipe.Each;
 import cascading.pipe.Pipe;
 import cascading.pipe.assembly.Discard;
@@ -68,19 +51,18 @@ public class LocalCSVDataStream implements DataStream<CSVStreamData> {
     }
 
     @Override
-    public Stream<CSVStreamData> filter(Predicate<? super CSVStreamData> predicate) {
+    public DataStream<CSVStreamData> filter(Predicate<CSVStreamData> predicate) {
         pipes.push(new Each(pipes.getLast(), new DataFilter(predicate)));
         return this;
     }
 
     @Override
-    public <R> Stream<R> map(Function<? super CSVStreamData, ? extends R> mapper) {
-        // TODO Auto-generated method stub
-        return null;
+    public DataStream<CSVStreamData> map(String fieldName, Function<String, String> mapper) {
+        return mapTo(fieldName, fieldName, mapper);
     }
 
     @Override
-    public <R> Stream<R> flatMap(Function<? super CSVStreamData, ? extends Stream<? extends R>> mapper) {
+    public DataStream<CSVStreamData> flatMap(Function<String, String> mapper) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -93,185 +75,14 @@ public class LocalCSVDataStream implements DataStream<CSVStreamData> {
         return this;
     }
 
+
+
     @Override
-    public DataStream<CSVStreamData> sorted() {
+    public DataStream<CSVStreamData> reduce(Function<String, String> func) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
-    public DataStream<CSVStreamData> sorted(Comparator<? super CSVStreamData> comparator) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Stream<CSVStreamData> peek(Consumer<? super CSVStreamData> action) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Stream<CSVStreamData> limit(long maxSize) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Stream<CSVStreamData> skip(long n) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void forEach(Consumer<? super CSVStreamData> action) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void forEachOrdered(Consumer<? super CSVStreamData> action) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public Object[] toArray() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <A> A[] toArray(IntFunction<A[]> generator) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public CSVStreamData reduce(CSVStreamData identity, BinaryOperator<CSVStreamData> accumulator) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Optional<CSVStreamData> reduce(BinaryOperator<CSVStreamData> accumulator) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <U> U reduce(U identity, BiFunction<U, ? super CSVStreamData, U> accumulator, BinaryOperator<U> combiner) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <R> R collect(Supplier<R> supplier, BiConsumer<R, ? super CSVStreamData> accumulator,
-            BiConsumer<R, R> combiner) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <R, A> R collect(Collector<? super CSVStreamData, A, R> collector) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Optional<CSVStreamData> min(Comparator<? super CSVStreamData> comparator) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Optional<CSVStreamData> max(Comparator<? super CSVStreamData> comparator) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public long count() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public boolean anyMatch(Predicate<? super CSVStreamData> predicate) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean allMatch(Predicate<? super CSVStreamData> predicate) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean noneMatch(Predicate<? super CSVStreamData> predicate) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public Optional<CSVStreamData> findFirst() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Optional<CSVStreamData> findAny() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Iterator<CSVStreamData> iterator() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Spliterator<CSVStreamData> spliterator() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public boolean isParallel() {
-        return false;
-    }
-
-    @Override
-    public Stream<CSVStreamData> sequential() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Stream<CSVStreamData> parallel() {
-        // No effect
-        return this;
-    }
-
-    @Override
-    public Stream<CSVStreamData> unordered() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Stream<CSVStreamData> onClose(Runnable closeHandler) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void close() {
-        // TODO Auto-generated method stub
-
-    }
 
     @Override
     public DataStream<CSVStreamData> tail(long num) {
@@ -302,12 +113,6 @@ public class LocalCSVDataStream implements DataStream<CSVStreamData> {
     }
 
     @Override
-    public DataStream<CSVStreamData> addFields(Function<CSVStreamData, String[]> function, String... fields) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public DataStream<CSVStreamData> rename(String name, String targetName) {
         pipes.add(new Rename(pipes.getLast(), new Fields(name), new Fields(targetName)));
         return this;
@@ -329,32 +134,32 @@ public class LocalCSVDataStream implements DataStream<CSVStreamData> {
     }
 
     @Override
-    public DataStream<CSVStreamData> leftJoin(Stream<CSVStreamData> rightStream) {
+    public DataStream<CSVStreamData> leftJoin(DataStream<CSVStreamData> rightStream) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public DataStream<CSVStreamData> rightJoin(Stream<CSVStreamData> rightStream) {
+    public DataStream<CSVStreamData> rightJoin(DataStream<CSVStreamData> rightStream) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public DataStream<CSVStreamData> innerJoin(Stream<CSVStreamData> rightStream) {
+    public DataStream<CSVStreamData> innerJoin(DataStream<CSVStreamData> rightStream) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public DataStream<CSVStreamData> outerJoin(Stream<CSVStreamData> rightStream) {
+    public DataStream<CSVStreamData> outerJoin(DataStream<CSVStreamData> rightStream) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public void writeTo(URI location) {
-        Scheme scheme = new TextDelimited(Fields.ALL, ",", "'");
+        Scheme scheme = new TextDelimited(true, ",");
         Tap sinkTap = new FileTap(scheme, location.getPath());
         flowDef = flowDef.addSource(sourcePipe, source.getSourceTap())
                 .addTailSink(pipes.getLast(), sinkTap).setName(name);
@@ -364,33 +169,15 @@ public class LocalCSVDataStream implements DataStream<CSVStreamData> {
     }
 
     @Override
-    public IntStream mapToInt(ToIntFunction<? super CSVStreamData> mapper) {
-        throw new UnsupportedOperationException();
+    public DataStream<CSVStreamData> sorted(String... fields) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
-    public LongStream mapToLong(ToLongFunction<? super CSVStreamData> mapper) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public DoubleStream mapToDouble(ToDoubleFunction<? super CSVStreamData> mapper) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public IntStream flatMapToInt(Function<? super CSVStreamData, ? extends IntStream> mapper) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public LongStream flatMapToLong(Function<? super CSVStreamData, ? extends LongStream> mapper) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public DoubleStream flatMapToDouble(Function<? super CSVStreamData, ? extends DoubleStream> mapper) {
-        throw new UnsupportedOperationException();
+    public DataStream<CSVStreamData> debug() {
+        flowDef.setDebugLevel(DebugLevel.VERBOSE);
+        return this;
     }
 
 }

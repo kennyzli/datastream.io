@@ -1,9 +1,8 @@
 package org.datastream.stream;
 
 import java.net.URI;
-import java.util.Comparator;
 import java.util.function.Function;
-import java.util.stream.Stream;
+import java.util.function.Predicate;
 
 /**
  * The DataStream is the class which extends the Stream interface and provide additional data streaming functions for
@@ -15,7 +14,7 @@ import java.util.stream.Stream;
  *
  * @param <T>
  */
-public interface DataStream<T extends StreamData> extends Stream<T> {
+public interface DataStream<T> {
     /**
      * Return the tails of the elements
      * 
@@ -26,25 +25,16 @@ public interface DataStream<T extends StreamData> extends Stream<T> {
     public DataStream<T> tail(long num);
 
     /**
-     * sort the stream
-     * 
-     */
-    @Override
-    public DataStream<T> sorted();
-
-    /**
      * sort the stream with the compared function
      * 
      */
-    @Override
-    public DataStream<T> sorted(Comparator<? super T> comparator);
+    public DataStream<T> sorted(String... fields);
 
     /**
      * make the distinct public and chanage the datatype to be DataStream
      * 
      * 
      */
-    @Override
     public DataStream<T> distinct();
 
     /**
@@ -65,15 +55,6 @@ public interface DataStream<T extends StreamData> extends Stream<T> {
      * @return
      */
     public DataStream<T> discard(String... fields);
-
-    /**
-     * Add additional fiels to the Stream columns
-     * 
-     * @param function
-     *            the function which take the input and return the list of new fields name and values
-     * @return
-     */
-    public DataStream<T> addFields(Function<T, String[]> function, String... fields);
 
     /**
      * rename the column
@@ -106,7 +87,7 @@ public interface DataStream<T extends StreamData> extends Stream<T> {
      * @param rightStream
      * @return new Stream
      */
-    public DataStream<T> leftJoin(Stream<T> rightStream);
+    public DataStream<T> leftJoin(DataStream<T> rightStream);
 
     /**
      * Right join the stream and return the new stream with the element type
@@ -114,20 +95,20 @@ public interface DataStream<T extends StreamData> extends Stream<T> {
      * @param rightStream
      * @return new Stream
      */
-    public DataStream<T> rightJoin(Stream<T> rightStream);
+    public DataStream<T> rightJoin(DataStream<T> rightStream);
 
     /**
      * outter join the stream and return the new stream with the element type <T>
      * 
      * @return
      */
-    public DataStream<T> outerJoin(Stream<T> rightStream);
+    public DataStream<T> outerJoin(DataStream<T> rightStream);
 
     /*
      * 
      * Right join the stream and return the elements
      */
-    public DataStream<T> innerJoin(Stream<T> rightStream);
+    public DataStream<T> innerJoin(DataStream<T> rightStream);
 
     /**
      * Write the data to the output location
@@ -136,5 +117,44 @@ public interface DataStream<T extends StreamData> extends Stream<T> {
      *            output URI location
      */
     public void writeTo(URI location);
+
+    /**
+     * filter out the field
+     * 
+     * @param predicate
+     * @return
+     */
+    DataStream<T> filter(Predicate<T> predicate);
+
+    /**
+     * map the field to the other value
+     * 
+     * @param mapper
+     * @return
+     */
+    DataStream<T> map(String fieldName, Function<String, String> mapper);
+
+    /**
+     * reduce the records
+     * 
+     * @param func
+     * @return
+     */
+    DataStream<T> reduce(Function<String, String> func);
+
+    /**
+     * flat map the data
+     * 
+     * @param mapper
+     * @return
+     */
+    DataStream<T> flatMap(Function<String, String> mapper);
+
+    /**
+     * debug the stream content
+     * 
+     * @return
+     */
+    DataStream<T> debug();
 
 }

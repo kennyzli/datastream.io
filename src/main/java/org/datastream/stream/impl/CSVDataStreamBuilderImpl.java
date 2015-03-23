@@ -3,7 +3,6 @@ package org.datastream.stream.impl;
 import java.net.URI;
 
 import org.datastream.stream.DataStream;
-import org.datastream.stream.StreamData;
 
 /**
  * The CSV Data Stream builder Impl which take the CSV stream source
@@ -42,10 +41,6 @@ class CSVDataStreamBuilderImpl extends DataStreamBuilder {
         return null;
     }
 
-    @Override
-    public void accept(StreamData data) {
-        super.accept(data);
-    }
 
     @Override
     public DataStreamBuilder source(URI location) {

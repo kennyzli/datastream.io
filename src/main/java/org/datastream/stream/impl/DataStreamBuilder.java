@@ -3,7 +3,6 @@ package org.datastream.stream.impl;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Stream.Builder;
 
 import org.datastream.stream.DataStream;
 import org.datastream.stream.StreamData;
@@ -17,7 +16,7 @@ import cascading.tap.Tap;
  * @author kenny.li
  *
  */
-public class DataStreamBuilder implements Builder<StreamData> {
+public class DataStreamBuilder {
     /* Source tap eventually will be add to the stream as source */
     private List<Tap> sourceTaps = new LinkedList<Tap>();
     /* Target tag eventually will be added to the stream as sink */
@@ -108,12 +107,6 @@ public class DataStreamBuilder implements Builder<StreamData> {
         this.name = name;
     }
 
-    @Override
-    public void accept(StreamData t) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public DataStream<StreamData> build() {
         throw new UnsupportedOperationException();
     }
