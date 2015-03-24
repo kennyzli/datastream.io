@@ -12,7 +12,7 @@ import org.datastream.stream.impl.DataStreamBuilder.BUILDER_TYPE;
 import org.datastream.stream.impl.DataStreamBuilder.RUNTIME_MODE;
 import org.junit.Test;
 
-public class localStreamTest {
+public class LocalStreamTest {
     @Test
     public void TestDataStreamBuilderCreation() {
         assertNotNull(DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER, RUNTIME_MODE.LOCAL_MODE));
@@ -30,7 +30,7 @@ public class localStreamTest {
         DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
                 RUNTIME_MODE.LOCAL_MODE);
         DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
-        stream.writeTo(new URI("data/output/data.dat"));
+        stream.writeTo(new URI("data/output/data.dat"), ",");
     }
 
     @Test
@@ -38,7 +38,7 @@ public class localStreamTest {
         DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
                 RUNTIME_MODE.LOCAL_MODE);
         DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
-        stream.mapTo("county", "OtherCountry", x -> x + ":newData").writeTo(new URI("data/output/mapped.dat"));
+        stream.mapTo("county", "OtherCountry", x -> x + ":newData").writeTo(new URI("data/output/mapped.dat"), ",");
     }
 
     @Test
@@ -46,7 +46,7 @@ public class localStreamTest {
         DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
                 RUNTIME_MODE.LOCAL_MODE);
         DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
-        stream.distinct().writeTo(new URI("data/output/distinct.dat"));
+        stream.distinct().writeTo(new URI("data/output/distinct.dat"), ",");
     }
 
     @Test
@@ -54,7 +54,7 @@ public class localStreamTest {
         DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
                 RUNTIME_MODE.LOCAL_MODE);
         DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
-        stream.project("county").writeTo(new URI("data/output/project.csv"));
+        stream.project("county").writeTo(new URI("data/output/project.csv"), ",");
     }
 
     @Test
@@ -62,7 +62,7 @@ public class localStreamTest {
         DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
                 RUNTIME_MODE.LOCAL_MODE);
         DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
-        stream.discard("county", "statecode").writeTo(new URI("data/output/discard.csv"));
+        stream.discard("county", "statecode").writeTo(new URI("data/output/discard.csv"), ",");
     }
 
     @Test
@@ -71,7 +71,7 @@ public class localStreamTest {
         DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
                 RUNTIME_MODE.LOCAL_MODE);
         DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
-        stream.sorted().writeTo(new URI("data/output/sorted.dat"));
+        stream.sorted().writeTo(new URI("data/output/sorted.dat"), ",");
     }
 
     @Test
@@ -100,7 +100,7 @@ public class localStreamTest {
                 RUNTIME_MODE.LOCAL_MODE);
         DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
         stream.debug()
-                .writeTo(new URI("data/output/sorted.csv"));
+                .writeTo(new URI("data/output/sorted.csv"), ",");
     }
 
 }

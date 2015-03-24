@@ -9,7 +9,7 @@ import org.datastream.stream.StreamSource;
 import org.datastream.stream.impl.AbstractDataStreamImpl;
 
 import cascading.flow.Flow;
-import cascading.flow.local.LocalFlowConnector;
+import cascading.flow.hadoop.HadoopFlowConnector;
 import cascading.pipe.GroupBy;
 import cascading.pipe.Pipe;
 import cascading.scheme.Scheme;
@@ -22,6 +22,7 @@ public class HadoopDataStream extends AbstractDataStreamImpl {
 
     private String name;
     private HadoopStreamSource source;
+
 
     public HadoopDataStream() {
 
@@ -60,15 +61,15 @@ public class HadoopDataStream extends AbstractDataStreamImpl {
     }
 
     @Override
-    public void writeTo(URI location) {
-        Scheme scheme = new TextDelimited(true, ",");
+    public void writeTo(URI location, String delimitor) {
+        Scheme scheme = new TextDelimited(true, delimitor);
         Tap sinkTap = new FileTap(scheme, location.getPath());
         LinkedList<Pipe> pipes = getPipes();
 
         setFlowDef(getFlowDef().addSource(getSourcePipe(), getStreamSource().getSourceTap())
                 .addTailSink(pipes.getLast(), sinkTap).setName(name));
         assert getFlowDef() != null;
-        Flow flow = new LocalFlowConnector().connect(getFlowDef());
+        Flow flow = new HadoopFlowConnector().connect(getFlowDef());
         flow.complete();
     }
 }

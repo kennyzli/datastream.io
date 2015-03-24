@@ -125,7 +125,7 @@ public interface DataStream<T> {
     public DataStream<T> rightJoin(DataStream<T> rightStream);
 
     /**
-     * outter join the stream and return the new stream with the element type <T>
+     * outer join the stream and return the new stream with the element type <T>
      * 
      * @return
      */
@@ -142,8 +142,10 @@ public interface DataStream<T> {
      * 
      * @param location
      *            output URI location
+     * @param delimitor
+     *            The delimiter of each record
      */
-    public void writeTo(URI location);
+    public void writeTo(URI location, String delimitor);
 
     /**
      * filter out the field

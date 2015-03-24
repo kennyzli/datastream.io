@@ -36,6 +36,12 @@
 		</dependency>
 		<dependency>
 			<groupId>cascading</groupId>
+			<artifactId>cascading-platform</artifactId>
+			<classifier>tests</classifier>
+			<version>${cascading.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cascading</groupId>
 			<artifactId>cascading-local</artifactId>
 			<version>${cascading.version}</version>
 		</dependency>

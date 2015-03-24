@@ -36,7 +36,6 @@ public abstract class AbstractDataStreamImpl implements DataStream<StreamData> {
     private FlowDef flowDef = new FlowDef();
 
     private LinkedList<Pipe> pipes = new LinkedList<Pipe>();
-    private String name;
 
     public AbstractDataStreamImpl() {
 

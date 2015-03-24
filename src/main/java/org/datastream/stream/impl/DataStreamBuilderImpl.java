@@ -4,6 +4,8 @@ import java.net.URI;
 
 import org.datastream.stream.DataStream;
 import org.datastream.stream.exp.DataStreamException;
+import org.datastream.stream.impl.hadoop.HadoopDataStream;
+import org.datastream.stream.impl.hadoop.HadoopStreamSource;
 import org.datastream.stream.impl.local.LocalDataStream;
 import org.datastream.stream.impl.local.LocalStreamSource;
 
@@ -29,18 +31,19 @@ class DataStreamBuilderImpl extends DataStreamBuilder {
     @Override
     public DataStream build() {
         if (location == null) {
-            throw new DataStreamException("The locaiton was not set yet");
+            throw new DataStreamException("The locaiton can't be empty");
         }
         switch (runtime) {
         case LOCAL_MODE:
-            LocalStreamSource source = new LocalStreamSource(location);
-            LocalDataStream stream = new LocalDataStream(name, source);
-            return stream;
+            LocalStreamSource lsource = new LocalStreamSource(location);
+            LocalDataStream lstream = new LocalDataStream(name, lsource);
+            return lstream;
         case HADOOP_MODE:
-            // TODO: the hadoop mode need to be enhanced later on
-            return null;
+            HadoopStreamSource hsource = new HadoopStreamSource(location);
+            HadoopDataStream hstream = new HadoopDataStream(name, hsource);
+            return hstream;
         }
-        assert false : "This should be unreached code.";
+        assert false : "This should be unreachable code.";
         return null;
     }
 

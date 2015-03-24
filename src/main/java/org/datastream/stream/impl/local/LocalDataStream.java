@@ -60,8 +60,8 @@ public class LocalDataStream extends AbstractDataStreamImpl {
     }
 
     @Override
-    public void writeTo(URI location) {
-        Scheme scheme = new TextDelimited(true, ",");
+    public void writeTo(URI location, String delimitor) {
+        Scheme scheme = new TextDelimited(true, delimitor);
         Tap sinkTap = new FileTap(scheme, location.getPath());
         LinkedList<Pipe> pipes = getPipes();
 

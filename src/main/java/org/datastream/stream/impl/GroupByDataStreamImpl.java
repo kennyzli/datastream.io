@@ -15,6 +15,14 @@ import cascading.pipe.Every;
 import cascading.pipe.Pipe;
 import cascading.tuple.Fields;
 
+/**
+ * The GroupBy Stream which was created by the groupBy method the instance will inherent the existing class stream and
+ * provide additional aggregation support
+ * 
+ * 
+ * @author kenny.li
+ *
+ */
 public class GroupByDataStreamImpl implements GroupByDataStream<StreamData> {
 
     private LinkedList<Pipe> pipes = new LinkedList<Pipe>();
