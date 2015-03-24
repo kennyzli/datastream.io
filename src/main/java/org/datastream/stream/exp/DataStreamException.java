@@ -1,4 +1,4 @@
-package org.datastream.stream.impl;
+package org.datastream.stream.exp;
 
 /**
  * The DataStreamException is designed for the exception for data stream processing

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.datastream.stream.DataStream;
 import org.datastream.stream.StreamData;
+import org.datastream.stream.exp.DataStreamException;
 
 import cascading.tap.Tap;
 

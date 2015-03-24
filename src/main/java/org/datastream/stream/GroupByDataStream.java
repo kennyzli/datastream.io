@@ -9,17 +9,55 @@ import java.util.function.Function;
  * @author kenny.li
  *
  * @param <T>
+ *            the template field which is the record type of the Group DataStream
  */
-public interface GroupByDataStream<T> extends DataStream<T> {
+public interface GroupByDataStream<T> {
+    /**
+     * predefined aggregation method which calculate the average of the specified field
+     * 
+     * 
+     * @param newFieldName
+     * @return
+     */
     GroupByDataStream<T> average(String newFieldName);
 
+    /**
+     * predefined aggregation method which calculate the count of the specified field.
+     * 
+     * @param newFieldName
+     * @return
+     */
     GroupByDataStream<T> count(String newFieldName);
 
+    /**
+     * predefined aggregation method which calculate the max value of the specified field
+     * 
+     * @param newFieldName
+     * @return
+     */
     GroupByDataStream<T> max(String newFieldName);
 
+    /**
+     * predefined aggregation method which calculate the min value of the specified field
+     * 
+     * @param newFieldName
+     * @return
+     */
     GroupByDataStream<T> min(String newFieldName);
 
+    /**
+     * predefined aggregation method which calculate the sum value of the specified field
+     * 
+     * @param newFieldName
+     * @return
+     */
     GroupByDataStream<T> sum(String newFieldName);
 
+    /**
+     * customized reduced method which calculate the 2 continuous field
+     * 
+     * @param func
+     * @return
+     */
     GroupByDataStream<T> reduce(Function<T, T> func);
 }

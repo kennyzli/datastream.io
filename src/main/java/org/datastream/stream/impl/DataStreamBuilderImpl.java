@@ -3,6 +3,9 @@ package org.datastream.stream.impl;
 import java.net.URI;
 
 import org.datastream.stream.DataStream;
+import org.datastream.stream.exp.DataStreamException;
+import org.datastream.stream.impl.local.LocalDataStream;
+import org.datastream.stream.impl.local.LocalStreamSource;
 
 /**
  * The CSV Data Stream builder Impl which take the CSV stream source

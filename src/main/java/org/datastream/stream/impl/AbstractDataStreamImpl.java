@@ -1,35 +1,27 @@
 package org.datastream.stream.impl;
 
-import java.net.URI;
 import java.util.LinkedList;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.datastream.stream.DataStream;
-import org.datastream.stream.GroupByDataStream;
 import org.datastream.stream.StreamData;
 import org.datastream.stream.StreamSource;
-import org.datastream.stream.func.DataFilter;
+import org.datastream.stream.func.DataFilterFunction;
 import org.datastream.stream.func.MapFieldFunction;
 import org.datastream.stream.func.StreamDataFunction;
+import org.datastream.stream.impl.local.LocalStreamSource;
 
-import cascading.flow.Flow;
 import cascading.flow.FlowDef;
-import cascading.flow.local.LocalFlowConnector;
 import cascading.operation.DebugLevel;
 import cascading.operation.filter.Limit;
 import cascading.operation.filter.Sample;
 import cascading.pipe.Each;
-import cascading.pipe.GroupBy;
 import cascading.pipe.Pipe;
 import cascading.pipe.assembly.Discard;
 import cascading.pipe.assembly.Rename;
 import cascading.pipe.assembly.Retain;
 import cascading.pipe.assembly.Unique;
-import cascading.scheme.Scheme;
-import cascading.scheme.local.TextDelimited;
-import cascading.tap.Tap;
-import cascading.tap.local.FileTap;
 import cascading.tuple.Fields;
 
 /**
@@ -39,35 +31,35 @@ import cascading.tuple.Fields;
  * @author kenny.li
  *
  */
-public abstract class AbstractDataStream implements DataStream<StreamData> {
+public abstract class AbstractDataStreamImpl implements DataStream<StreamData> {
     private Pipe sourcePipe;
     private FlowDef flowDef = new FlowDef();
 
     private LinkedList<Pipe> pipes = new LinkedList<Pipe>();
     private String name;
 
-    public AbstractDataStream() {
+    public AbstractDataStreamImpl() {
 
     }
 
     abstract protected StreamSource getStreamSource();
 
-    AbstractDataStream(String name, LocalStreamSource dataSource) {
+    AbstractDataStreamImpl(String name, LocalStreamSource dataSource) {
 
     }
 
-    protected LinkedList<Pipe> getPipes() {
+    public LinkedList<Pipe> getPipes() {
         return this.pipes;
     }
 
-    protected void setPipes(LinkedList<Pipe> pipes) {
+    public void setPipes(LinkedList<Pipe> pipes) {
         this.pipes = pipes;
     }
 
 
     @Override
     public DataStream<StreamData> filter(Predicate<StreamData> predicate) {
-        pipes.add(new Each(pipes.getLast(), new DataFilter(predicate)));
+        pipes.add(new Each(pipes.getLast(), new DataFilterFunction(predicate)));
         return this;
     }
 
@@ -158,16 +150,7 @@ public abstract class AbstractDataStream implements DataStream<StreamData> {
         return null;
     }
 
-    @Override
-    public void writeTo(URI location) {
-        Scheme scheme = new TextDelimited(true, ",");
-        Tap sinkTap = new FileTap(scheme, location.getPath());
-        flowDef = flowDef.addSource(getSourcePipe(), getStreamSource().getSourceTap())
-                .addTailSink(pipes.getLast(), sinkTap).setName(name);
-        assert flowDef != null;
-        Flow flow = new LocalFlowConnector().connect(flowDef);
-        flow.complete();
-    }
+
 
     @Override
     public DataStream<StreamData> sorted(String... fields) {
@@ -177,7 +160,7 @@ public abstract class AbstractDataStream implements DataStream<StreamData> {
 
     @Override
     public DataStream<StreamData> debug() {
-        flowDef.setDebugLevel(DebugLevel.VERBOSE);
+        getFlowDef().setDebugLevel(DebugLevel.VERBOSE);
         return this;
     }
 
@@ -205,17 +188,7 @@ public abstract class AbstractDataStream implements DataStream<StreamData> {
         return this;
     }
 
-    @Override
-    public GroupByDataStream<StreamData> groupBy(String... fields) {
-        Fields field = new Fields();
-        for(String fieldName : fields){
-            field = field.append(new Fields(fieldName));
-        }
-        GroupBy groupBy = new GroupBy(pipes.getLast(), field);
-        pipes.add(groupBy);
 
-        return new LocalGroupByDataStream(this);
-    }
 
     protected Pipe getSourcePipe() {
         return sourcePipe;
@@ -223,6 +196,14 @@ public abstract class AbstractDataStream implements DataStream<StreamData> {
 
     protected void setSourcePipe(Pipe sourcePipe) {
         this.sourcePipe = sourcePipe;
+    }
+
+    protected FlowDef getFlowDef() {
+        return flowDef;
+    }
+
+    protected void setFlowDef(FlowDef def) {
+        flowDef = def;
     }
 
 }

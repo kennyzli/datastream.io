@@ -1,4 +1,4 @@
-package org.datastream.stream.impl;
+package org.datastream.stream.impl.hadoop;
 
 import java.net.URI;
 
@@ -9,15 +9,15 @@ import cascading.scheme.local.TextDelimited;
 import cascading.tap.Tap;
 import cascading.tap.local.FileTap;
 
-public class LocalStreamSource implements StreamSource {
+public class HadoopStreamSource implements StreamSource {
 
     private URI location;
 
     /**
-     * private CSVStreamSource
+     * private StreamSource
      * 
      */
-    protected LocalStreamSource(URI location) {
+    public HadoopStreamSource(URI location) {
         this.location = location;
     }
 

@@ -17,13 +17,13 @@ import cascading.tuple.TupleEntry;
  * @param <Config>
  * @param <Context>
  */
-public class DataFilter<Config, Context> extends BaseOperation<Context> implements Filter<Context> {
+public class DataFilterFunction<Config, Context> extends BaseOperation<Context> implements Filter<Context> {
 
     private static final long serialVersionUID = -8163034869041927892L;
 
     private Predicate<TupleEntry> input;
 
-    public DataFilter(Predicate<TupleEntry> input) {
+    public DataFilterFunction(Predicate<TupleEntry> input) {
         super();
         this.input = input;
     }

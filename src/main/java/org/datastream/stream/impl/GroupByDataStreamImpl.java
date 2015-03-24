@@ -15,14 +15,16 @@ import cascading.pipe.Every;
 import cascading.pipe.Pipe;
 import cascading.tuple.Fields;
 
-import com.google.common.collect.Lists;
+public class GroupByDataStreamImpl implements GroupByDataStream<StreamData> {
 
-public class LocalGroupByDataStream extends LocalDataStream implements GroupByDataStream<StreamData> {
+    private LinkedList<Pipe> pipes = new LinkedList<Pipe>();
 
-    LocalGroupByDataStream(AbstractDataStream stream) {
-        LinkedList<Pipe> pipes = Lists.newLinkedList();
-        pipes.addAll(stream.getPipes());
-        setPipes(pipes);
+    public LinkedList<Pipe> getPipes() {
+        return this.pipes;
+    }
+
+    public void setPipes(LinkedList<Pipe> pipes) {
+        this.pipes = pipes;
     }
 
     @Override
@@ -67,7 +69,7 @@ public class LocalGroupByDataStream extends LocalDataStream implements GroupByDa
 
     @Override
     public GroupByDataStream<StreamData> sum(String newFieldName) {
-        Sum  sum = new Sum(new Fields(newFieldName));
+        Sum sum = new Sum(new Fields(newFieldName));
         LinkedList<Pipe> pipes = getPipes();
         Every every = new Every(pipes.getLast(), sum);
         pipes.add(every);
@@ -80,5 +82,4 @@ public class LocalGroupByDataStream extends LocalDataStream implements GroupByDa
         // TODO Auto-generated method stub
         return null;
     }
-
 }
