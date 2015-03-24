@@ -9,7 +9,7 @@ import cascading.scheme.local.TextDelimited;
 import cascading.tap.Tap;
 import cascading.tap.local.FileTap;
 
-public class LocalCSVStreamSource implements StreamSource {
+public class LocalStreamSource implements StreamSource {
 
     private URI location;
 
@@ -17,7 +17,7 @@ public class LocalCSVStreamSource implements StreamSource {
      * private CSVStreamSource
      * 
      */
-    protected LocalCSVStreamSource(URI location) {
+    protected LocalStreamSource(URI location) {
         this.location = location;
     }
 
@@ -25,8 +25,9 @@ public class LocalCSVStreamSource implements StreamSource {
         return location;
     }
 
+    @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    Tap getSourceTap() {
+    public Tap getSourceTap() {
         Scheme scheme = new TextDelimited(true, ",");
 
         Tap tap = new FileTap(scheme, location.getPath());

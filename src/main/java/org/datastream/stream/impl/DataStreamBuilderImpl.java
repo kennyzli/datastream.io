@@ -10,7 +10,7 @@ import org.datastream.stream.DataStream;
  * @author kenny.li
  *
  */
-class CSVDataStreamBuilderImpl extends DataStreamBuilder {
+class DataStreamBuilderImpl extends DataStreamBuilder {
     private RUNTIME_MODE runtime = RUNTIME_MODE.LOCAL_MODE;
     private URI location;
 
@@ -18,7 +18,7 @@ class CSVDataStreamBuilderImpl extends DataStreamBuilder {
      * The CSV Data Stream builder is the one which only should be initiated by the DataStreamBuilder class This class
      * should not be exposed to outside the world
      */
-    CSVDataStreamBuilderImpl(RUNTIME_MODE runtimeMode) {
+    DataStreamBuilderImpl(RUNTIME_MODE runtimeMode) {
         this.runtime = runtimeMode;
     }
 
@@ -30,8 +30,8 @@ class CSVDataStreamBuilderImpl extends DataStreamBuilder {
         }
         switch (runtime) {
         case LOCAL_MODE:
-            LocalCSVStreamSource source = new LocalCSVStreamSource(location);
-            LocalCSVDataStream stream = new LocalCSVDataStream(name, source);
+            LocalStreamSource source = new LocalStreamSource(location);
+            LocalDataStream stream = new LocalDataStream(name, source);
             return stream;
         case HADOOP_MODE:
             // TODO: the hadoop mode need to be enhanced later on

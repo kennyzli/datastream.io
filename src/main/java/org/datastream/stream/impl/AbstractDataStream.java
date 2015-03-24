@@ -2,13 +2,13 @@ package org.datastream.stream.impl;
 
 import java.net.URI;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.datastream.stream.DataStream;
 import org.datastream.stream.GroupByDataStream;
 import org.datastream.stream.StreamData;
+import org.datastream.stream.StreamSource;
 import org.datastream.stream.func.DataFilter;
 import org.datastream.stream.func.MapFieldFunction;
 import org.datastream.stream.func.StreamDataFunction;
@@ -39,29 +39,24 @@ import cascading.tuple.Fields;
  * @author kenny.li
  *
  */
-public class LocalCSVDataStream implements DataStream<StreamData> {
-    private LocalCSVStreamSource source;
+public abstract class AbstractDataStream implements DataStream<StreamData> {
     private Pipe sourcePipe;
     private FlowDef flowDef = new FlowDef();
 
     private LinkedList<Pipe> pipes = new LinkedList<Pipe>();
     private String name;
 
-    public LocalCSVDataStream() {
+    public AbstractDataStream() {
 
     }
 
-    LocalCSVDataStream(String name, LocalCSVStreamSource dataSource) {
-        assert dataSource != null;
-        this.name = name;
+    abstract protected StreamSource getStreamSource();
 
-        this.source = dataSource;
-        sourcePipe = new Pipe(name + ":source");
-        pipes.add(sourcePipe);
+    AbstractDataStream(String name, LocalStreamSource dataSource) {
 
     }
 
-    protected List<Pipe> getPipes() {
+    protected LinkedList<Pipe> getPipes() {
         return this.pipes;
     }
 
@@ -167,7 +162,7 @@ public class LocalCSVDataStream implements DataStream<StreamData> {
     public void writeTo(URI location) {
         Scheme scheme = new TextDelimited(true, ",");
         Tap sinkTap = new FileTap(scheme, location.getPath());
-        flowDef = flowDef.addSource(sourcePipe, source.getSourceTap())
+        flowDef = flowDef.addSource(getSourcePipe(), getStreamSource().getSourceTap())
                 .addTailSink(pipes.getLast(), sinkTap).setName(name);
         assert flowDef != null;
         Flow flow = new LocalFlowConnector().connect(flowDef);
@@ -220,6 +215,14 @@ public class LocalCSVDataStream implements DataStream<StreamData> {
         pipes.add(groupBy);
 
         return new LocalGroupByDataStream(this);
+    }
+
+    protected Pipe getSourcePipe() {
+        return sourcePipe;
+    }
+
+    protected void setSourcePipe(Pipe sourcePipe) {
+        this.sourcePipe = sourcePipe;
     }
 
 }

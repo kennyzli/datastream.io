@@ -1,5 +1,7 @@
 package org.datastream.stream;
 
-public interface StreamSource {
+import cascading.tap.Tap;
 
+public interface StreamSource {
+    Tap getSourceTap();
 }

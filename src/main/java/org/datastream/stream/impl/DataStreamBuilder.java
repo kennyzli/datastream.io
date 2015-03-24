@@ -56,7 +56,7 @@ public class DataStreamBuilder {
             throws DataStreamException {
         switch (type) {
         case CSV_STREAM_BUILDER:
-            return new CSVDataStreamBuilderImpl(runtimeMode);
+            return new DataStreamBuilderImpl(runtimeMode);
         }
 
         assert false : "Not reachable code";
