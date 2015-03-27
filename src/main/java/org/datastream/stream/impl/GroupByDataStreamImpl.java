@@ -143,10 +143,6 @@ public class GroupByDataStreamImpl implements GroupByDataStream<StreamData> {
         return null;
     }
 
-    @Override
-    public DataStream<StreamData> sorted(String... fields) {
-        return null;
-    }
 
     @Override
     public DataStream<StreamData> distinct() {

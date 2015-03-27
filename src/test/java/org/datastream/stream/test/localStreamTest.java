@@ -65,13 +65,6 @@ public class LocalStreamTest {
         stream.discard("county", "statecode").writeTo(new URI("data/output/discard.csv"), ",");
     }
 
-    public void testDataStreamSortedWithLocalMode() throws URISyntaxException {
-
-        DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
-                RUNTIME_MODE.LOCAL_MODE);
-        DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
-        stream.sorted().writeTo(new URI("data/output/sorted.dat"), ",");
-    }
 
     @Test
     public void testDataStreamWithGroupByCount() throws URISyntaxException {

@@ -52,12 +52,6 @@ public interface DataStream<T> {
     public DataStream<T> process(Function<T, T> func);
 
     /**
-     * sort the stream with the compared function
-     * 
-     */
-    public DataStream<T> sorted(String... fields);
-
-    /**
      * make the distinct public and chanage the datatype to be DataStream
      * 
      * 

@@ -1,6 +1,7 @@
 package org.datastream.stream.impl;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -22,6 +23,7 @@ import cascading.pipe.assembly.Discard;
 import cascading.pipe.assembly.Rename;
 import cascading.pipe.assembly.Retain;
 import cascading.pipe.assembly.Unique;
+import cascading.tap.Tap;
 import cascading.tuple.Fields;
 
 import com.google.common.collect.Lists;
@@ -34,7 +36,13 @@ import com.google.common.collect.Lists;
  *
  */
 public abstract class AbstractDataStreamImpl implements DataStream<StreamData> {
-    private Pipe sourcePipe;
+
+    public static class TapPipe {
+        public Pipe sourcePipe;
+        public Tap sourceTap;
+    }
+
+    private List<TapPipe> sourcePipe;
     private FlowDef flowDef = new FlowDef();
 
     private LinkedList<Pipe> pipes = new LinkedList<Pipe>();
@@ -164,12 +172,6 @@ public abstract class AbstractDataStreamImpl implements DataStream<StreamData> {
 
 
     @Override
-    public DataStream<StreamData> sorted(String... fields) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public DataStream<StreamData> debug() {
         getFlowDef().setDebugLevel(DebugLevel.VERBOSE);
         return this;
@@ -201,12 +203,12 @@ public abstract class AbstractDataStreamImpl implements DataStream<StreamData> {
 
 
 
-    public Pipe getSourcePipe() {
+    public List<TapPipe> getSourcePipe() {
         return sourcePipe;
     }
 
-    protected void setSourcePipe(Pipe sourcePipe) {
-        this.sourcePipe = sourcePipe;
+    protected void setSourcePipe(List<TapPipe> source) {
+        this.sourcePipe = source;
     }
 
     protected FlowDef getFlowDef() {

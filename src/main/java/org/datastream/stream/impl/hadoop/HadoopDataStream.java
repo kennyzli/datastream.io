@@ -1,7 +1,9 @@
 package org.datastream.stream.impl.hadoop;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.datastream.stream.GroupByDataStream;
 import org.datastream.stream.StreamData;
@@ -9,6 +11,7 @@ import org.datastream.stream.StreamSource;
 import org.datastream.stream.impl.AbstractDataStreamImpl;
 
 import cascading.flow.Flow;
+import cascading.flow.FlowDef;
 import cascading.flow.hadoop.HadoopFlowConnector;
 import cascading.pipe.GroupBy;
 import cascading.pipe.Pipe;
@@ -23,7 +26,6 @@ public class HadoopDataStream extends AbstractDataStreamImpl {
     private String name;
     private HadoopStreamSource source;
 
-
     public HadoopDataStream() {
 
     }
@@ -32,16 +34,19 @@ public class HadoopDataStream extends AbstractDataStreamImpl {
         super(stream);
     }
 
-
     public HadoopDataStream(String name, HadoopStreamSource dataSource) {
         assert dataSource != null;
         this.name = name;
 
         this.source = dataSource;
-        setSourcePipe(new Pipe(name + ":source"));
-
+        TapPipe tapSource = new TapPipe();
+        tapSource.sourcePipe = new Pipe(name + ":source");
+        tapSource.sourceTap = dataSource.getSourceTap();
+        List<TapPipe> sources = new ArrayList<AbstractDataStreamImpl.TapPipe>();
+        sources.add(tapSource);
+        setSourcePipe(sources);
         LinkedList<Pipe> list = getPipes();
-        list.add(getSourcePipe());
+        list.add(tapSource.sourcePipe);
         setPipes(list);
 
     }
@@ -75,9 +80,16 @@ public class HadoopDataStream extends AbstractDataStreamImpl {
         Scheme scheme = new TextDelimited(true, delimitor);
         Tap sinkTap = new FileTap(scheme, location.getPath());
         LinkedList<Pipe> pipes = getPipes();
+        TapPipe tPipes = getSourcePipe().get(0);
 
-        setFlowDef(getFlowDef().addSource(getSourcePipe(), getStreamSource().getSourceTap())
-                .addTailSink(pipes.getLast(), sinkTap).setName(name));
+        FlowDef def = getFlowDef();
+
+        for (TapPipe tPipe : getSourcePipe()) {
+            def = def.addSource(tPipe.sourcePipe, tPipe.sourceTap);
+        }
+
+        setFlowDef(def.addTailSink(pipes.getLast(), sinkTap).setName(name));
+
         assert getFlowDef() != null;
         Flow flow = new HadoopFlowConnector().connect(getFlowDef());
         flow.complete();

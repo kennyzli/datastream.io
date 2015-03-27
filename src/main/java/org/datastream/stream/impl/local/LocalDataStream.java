@@ -1,7 +1,9 @@
 package org.datastream.stream.impl.local;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.datastream.stream.GroupByDataStream;
 import org.datastream.stream.StreamData;
@@ -9,6 +11,7 @@ import org.datastream.stream.StreamSource;
 import org.datastream.stream.impl.AbstractDataStreamImpl;
 
 import cascading.flow.Flow;
+import cascading.flow.FlowDef;
 import cascading.flow.local.LocalFlowConnector;
 import cascading.pipe.GroupBy;
 import cascading.pipe.Pipe;
@@ -36,10 +39,15 @@ public class LocalDataStream extends AbstractDataStreamImpl {
         this.name = name;
 
         this.source = dataSource;
-        setSourcePipe(new Pipe(name + ":source"));
+        TapPipe tapSource = new TapPipe();
+        tapSource.sourcePipe = new Pipe(name + ":source");
+        tapSource.sourceTap = dataSource.getSourceTap();
+        List<TapPipe> sources = new ArrayList<AbstractDataStreamImpl.TapPipe>();
+        sources.add(tapSource);
+        setSourcePipe(sources);
 
         LinkedList<Pipe> list = getPipes();
-        list.add(getSourcePipe());
+        list.add(tapSource.sourcePipe);
         setPipes(list);
 
     }
@@ -74,9 +82,14 @@ public class LocalDataStream extends AbstractDataStreamImpl {
         Scheme scheme = new TextDelimited(true, delimitor);
         Tap sinkTap = new FileTap(scheme, location.getPath());
         LinkedList<Pipe> pipes = getPipes();
+        FlowDef def = getFlowDef();
 
-        setFlowDef(getFlowDef().addSource(getSourcePipe(), getStreamSource().getSourceTap())
-                .addTailSink(pipes.getLast(), sinkTap).setName(name));
+        for (TapPipe tPipe : getSourcePipe()) {
+            def = def.addSource(tPipe.sourcePipe, tPipe.sourceTap);
+        }
+
+        setFlowDef(def.addTailSink(pipes.getLast(), sinkTap).setName(name));
+
         assert getFlowDef() != null;
         Flow flow = new LocalFlowConnector().connect(getFlowDef());
         flow.complete();
