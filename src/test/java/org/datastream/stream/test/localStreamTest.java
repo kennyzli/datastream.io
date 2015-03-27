@@ -65,13 +65,54 @@ public class LocalStreamTest {
         stream.discard("county", "statecode").writeTo(new URI("data/output/discard.csv"), ",");
     }
 
-    @Test
     public void testDataStreamSortedWithLocalMode() throws URISyntaxException {
 
         DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
                 RUNTIME_MODE.LOCAL_MODE);
         DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
         stream.sorted().writeTo(new URI("data/output/sorted.dat"), ",");
+    }
+
+    @Test
+    public void testDataStreamWithGroupByCount() throws URISyntaxException {
+        DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
+                RUNTIME_MODE.LOCAL_MODE);
+        DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
+        stream.groupBy("county").count("count", "point_granularity")
+                .writeTo(new URI("data/output/count_groupby.csv"), ",");
+    }
+
+    @Test
+    public void testDataStreamWithGroupByAvg() throws URISyntaxException {
+        DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
+                RUNTIME_MODE.LOCAL_MODE);
+        DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
+        stream.groupBy("county").average("average", "point_granularity")
+                .writeTo(new URI("data/output/average_groupby.csv"), ",");
+    }
+
+    @Test
+    public void testDataStreamWithGroupByMax() throws URISyntaxException {
+        DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
+                RUNTIME_MODE.LOCAL_MODE);
+        DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
+        stream.groupBy("county").max("max", "point_granularity").writeTo(new URI("data/output/max_groupby.csv"), ",");
+    }
+
+    @Test
+    public void testDataStreamWithGroupByMin() throws URISyntaxException {
+        DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
+                RUNTIME_MODE.LOCAL_MODE);
+        DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
+        stream.groupBy("county").min("min", "point_granularity").writeTo(new URI("data/output/min_groupby.csv"), ",");
+    }
+
+    @Test
+    public void testDataStreamWithGroupBySum() throws URISyntaxException {
+        DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
+                RUNTIME_MODE.LOCAL_MODE);
+        DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
+        stream.groupBy("county").sum("sum", "point_granularity").writeTo(new URI("data/output/sum_groupby.csv"), ",");
     }
 
     @Test

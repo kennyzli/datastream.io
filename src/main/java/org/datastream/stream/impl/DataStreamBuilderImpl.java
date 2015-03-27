@@ -44,7 +44,7 @@ class DataStreamBuilderImpl extends DataStreamBuilder {
             return hstream;
         }
         assert false : "This should be unreachable code.";
-        return null;
+        throw new DataStreamException("unreachable code");
     }
 
 

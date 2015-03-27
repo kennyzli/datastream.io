@@ -24,6 +24,8 @@ import cascading.pipe.assembly.Retain;
 import cascading.pipe.assembly.Unique;
 import cascading.tuple.Fields;
 
+import com.google.common.collect.Lists;
+
 /**
  * The local csv dataStream implementation which is able to provide the solid implementation for the client
  * 
@@ -41,7 +43,17 @@ public abstract class AbstractDataStreamImpl implements DataStream<StreamData> {
 
     }
 
+    public AbstractDataStreamImpl(AbstractDataStreamImpl stream) {
+        LinkedList<Pipe> pipes = Lists.newLinkedList();
+        pipes.addAll(stream.getPipes());
+        setPipes(pipes);
+        setSourcePipe(stream.getSourcePipe());
+        setStreamSource(stream.getStreamSource());
+    }
+
     abstract protected StreamSource getStreamSource();
+
+    abstract protected void setStreamSource(StreamSource source);
 
     AbstractDataStreamImpl(String name, LocalStreamSource dataSource) {
 
@@ -189,7 +201,7 @@ public abstract class AbstractDataStreamImpl implements DataStream<StreamData> {
 
 
 
-    protected Pipe getSourcePipe() {
+    public Pipe getSourcePipe() {
         return sourcePipe;
     }
 
@@ -204,5 +216,6 @@ public abstract class AbstractDataStreamImpl implements DataStream<StreamData> {
     protected void setFlowDef(FlowDef def) {
         flowDef = def;
     }
+
 
 }

@@ -1,15 +1,11 @@
 package org.datastream.stream.impl.hadoop;
 
-import java.util.LinkedList;
 import java.util.function.Function;
 
+import org.datastream.stream.DataStream;
 import org.datastream.stream.GroupByDataStream;
 import org.datastream.stream.StreamData;
 import org.datastream.stream.impl.GroupByDataStreamImpl;
-
-import cascading.pipe.Pipe;
-
-import com.google.common.collect.Lists;
 
 /**
  * The Local GroupBy DataStream
@@ -17,52 +13,51 @@ import com.google.common.collect.Lists;
  * @author kenny.li
  *
  */
-public class HadoopGroupByDataStream extends HadoopDataStream implements GroupByDataStream<StreamData> {
+public class HadoopGroupByDataStream extends HadoopDataStream implements GroupByDataStream<StreamData>,
+        DataStream<StreamData> {
     // The real implementation
     private GroupByDataStreamImpl groupByStream = new GroupByDataStreamImpl();
 
     HadoopGroupByDataStream(HadoopDataStream stream) {
-        LinkedList<Pipe> pipes = Lists.newLinkedList();
-        pipes.addAll(stream.getPipes());
-        setPipes(pipes);
+        super(stream);
     }
 
     @Override
-    public GroupByDataStream<StreamData> average(String newFieldName) {
+    public GroupByDataStream<StreamData> average(String newFieldName, String... fieldsName) {
         groupByStream.setPipes(getPipes());
-        groupByStream.average(newFieldName);
+        groupByStream.average(newFieldName, fieldsName);
         setPipes(groupByStream.getPipes());
         return this;
     }
 
     @Override
-    public GroupByDataStream<StreamData> count(String newFieldName) {
+    public GroupByDataStream<StreamData> count(String newFieldName, String... fieldsName) {
         groupByStream.setPipes(getPipes());
-        groupByStream.count(newFieldName);
+        groupByStream.count(newFieldName, fieldsName);
         setPipes(groupByStream.getPipes());
         return this;
     }
 
     @Override
-    public GroupByDataStream<StreamData> max(String newFieldName) {
+    public GroupByDataStream<StreamData> max(String newFieldName, String... fieldsName) {
         groupByStream.setPipes(getPipes());
-        groupByStream.max(newFieldName);
+        groupByStream.max(newFieldName, fieldsName);
         setPipes(groupByStream.getPipes());
         return this;
     }
 
     @Override
-    public GroupByDataStream<StreamData> min(String newFieldName) {
+    public GroupByDataStream<StreamData> min(String newFieldName, String... fieldsName) {
         groupByStream.setPipes(getPipes());
-        groupByStream.min(newFieldName);
+        groupByStream.min(newFieldName, fieldsName);
         setPipes(groupByStream.getPipes());
         return this;
     }
 
     @Override
-    public GroupByDataStream<StreamData> sum(String newFieldName) {
+    public GroupByDataStream<StreamData> sum(String newFieldName, String... fieldsName) {
         groupByStream.setPipes(getPipes());
-        groupByStream.sum(newFieldName);
+        groupByStream.sum(newFieldName, fieldsName);
         setPipes(groupByStream.getPipes());
         return this;
     }

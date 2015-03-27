@@ -27,6 +27,10 @@ public class LocalDataStream extends AbstractDataStreamImpl {
 
     }
 
+    public LocalDataStream(LocalDataStream stream) {
+        super(stream);
+    }
+
     public LocalDataStream(String name, LocalStreamSource dataSource) {
         assert dataSource != null;
         this.name = name;
@@ -41,8 +45,13 @@ public class LocalDataStream extends AbstractDataStreamImpl {
     }
 
     @Override
-    protected StreamSource getStreamSource() {
+    public StreamSource getStreamSource() {
         return source;
+    }
+
+    @Override
+    protected void setStreamSource(StreamSource source) {
+        this.source = (LocalStreamSource) source;
     }
 
     @Override
@@ -51,7 +60,8 @@ public class LocalDataStream extends AbstractDataStreamImpl {
         for (String fieldName : fields) {
             field = field.append(new Fields(fieldName));
         }
-        LinkedList<Pipe> pipes = new LinkedList<Pipe>();
+        LinkedList<Pipe> pipes = getPipes();
+        assert pipes.size() > 0;
         GroupBy groupBy = new GroupBy(pipes.getLast(), field);
         pipes.add(groupBy);
         setPipes(pipes);

@@ -28,6 +28,11 @@ public class HadoopDataStream extends AbstractDataStreamImpl {
 
     }
 
+    public HadoopDataStream(HadoopDataStream stream) {
+        super(stream);
+    }
+
+
     public HadoopDataStream(String name, HadoopStreamSource dataSource) {
         assert dataSource != null;
         this.name = name;
@@ -44,6 +49,11 @@ public class HadoopDataStream extends AbstractDataStreamImpl {
     @Override
     protected StreamSource getStreamSource() {
         return source;
+    }
+
+    @Override
+    protected void setStreamSource(StreamSource source) {
+        this.source = (HadoopStreamSource) source;
     }
 
     @Override
@@ -72,4 +82,5 @@ public class HadoopDataStream extends AbstractDataStreamImpl {
         Flow flow = new HadoopFlowConnector().connect(getFlowDef());
         flow.complete();
     }
+
 }

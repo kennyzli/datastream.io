@@ -11,7 +11,7 @@ import java.util.function.Function;
  * @param <T>
  *            the template field which is the record type of the Group DataStream
  */
-public interface GroupByDataStream<T> {
+public interface GroupByDataStream<T> extends DataStream<T> {
     /**
      * predefined aggregation method which calculate the average of the specified field
      * 
@@ -19,7 +19,7 @@ public interface GroupByDataStream<T> {
      * @param newFieldName
      * @return
      */
-    GroupByDataStream<T> average(String newFieldName);
+    GroupByDataStream<T> average(String newFieldName, String... fieldsName);
 
     /**
      * predefined aggregation method which calculate the count of the specified field.
@@ -27,7 +27,7 @@ public interface GroupByDataStream<T> {
      * @param newFieldName
      * @return
      */
-    GroupByDataStream<T> count(String newFieldName);
+    GroupByDataStream<T> count(String newFieldName, String... fieldsName);
 
     /**
      * predefined aggregation method which calculate the max value of the specified field
@@ -35,7 +35,7 @@ public interface GroupByDataStream<T> {
      * @param newFieldName
      * @return
      */
-    GroupByDataStream<T> max(String newFieldName);
+    GroupByDataStream<T> max(String newFieldName, String... fieldsName);
 
     /**
      * predefined aggregation method which calculate the min value of the specified field
@@ -43,7 +43,7 @@ public interface GroupByDataStream<T> {
      * @param newFieldName
      * @return
      */
-    GroupByDataStream<T> min(String newFieldName);
+    GroupByDataStream<T> min(String newFieldName, String... fieldsName);
 
     /**
      * predefined aggregation method which calculate the sum value of the specified field
@@ -51,7 +51,7 @@ public interface GroupByDataStream<T> {
      * @param newFieldName
      * @return
      */
-    GroupByDataStream<T> sum(String newFieldName);
+    GroupByDataStream<T> sum(String newFieldName, String... fieldsName);
 
     /**
      * customized reduced method which calculate the 2 continuous field
