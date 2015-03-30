@@ -45,6 +45,7 @@ public class HadoopDataStream extends AbstractDataStreamImpl {
         List<TapPipe> sources = new ArrayList<AbstractDataStreamImpl.TapPipe>();
         sources.add(tapSource);
         setSourcePipe(sources);
+
         LinkedList<Pipe> list = getPipes();
         list.add(tapSource.sourcePipe);
         setPipes(list);

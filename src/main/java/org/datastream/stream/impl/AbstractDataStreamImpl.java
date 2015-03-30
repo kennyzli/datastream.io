@@ -1,5 +1,6 @@
 package org.datastream.stream.impl;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
@@ -42,7 +43,7 @@ public abstract class AbstractDataStreamImpl implements DataStream<StreamData> {
         public Tap sourceTap;
     }
 
-    private List<TapPipe> sourcePipe;
+    private List<TapPipe> sourcePipe = new ArrayList<AbstractDataStreamImpl.TapPipe>();
     private FlowDef flowDef = new FlowDef();
 
     private LinkedList<Pipe> pipes = new LinkedList<Pipe>();

@@ -42,10 +42,13 @@ public class LocalDataStream extends AbstractDataStreamImpl {
         TapPipe tapSource = new TapPipe();
         tapSource.sourcePipe = new Pipe(name + ":source");
         tapSource.sourceTap = dataSource.getSourceTap();
+
+        // tap pipes combination
         List<TapPipe> sources = new ArrayList<AbstractDataStreamImpl.TapPipe>();
         sources.add(tapSource);
         setSourcePipe(sources);
 
+        // pipes
         LinkedList<Pipe> list = getPipes();
         list.add(tapSource.sourcePipe);
         setPipes(list);
