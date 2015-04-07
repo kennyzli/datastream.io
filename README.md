@@ -26,3 +26,7 @@ DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv"))
 stream.mapTo("county", "OtherCountry", x -> x + ":newData").
 writeTo(new URI("data/output/mapped.dat"), ",");
 ```
+
+Believe me, if might need to write over 1k lines of code to do exact the samething with map reduce to make it run
+and couple of hundrends of line of code in cascading as well. 
+
