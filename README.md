@@ -31,7 +31,8 @@ Believe me, if might need to write over 1k lines of code to do exact the samethi
 and couple of hundrends of line of code in cascading as well. 
 
 ##About me 
-kenny li(zhenqi li) 
+kenny li(Zhenqi li) 
+
 [About me]https://www.linkedin.com/profile/view?id=48862722&trk=hp-identity-photo
 
 
