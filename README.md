@@ -9,8 +9,8 @@ Impired by twitter's scalding,
 
 scala is nice language to work with but not highly adopted by java development community. 
 
-datatream's purpose is to take advantage the java8 functional programing features 
-and make java + hadoop life easier. 
+Datatream's purpose is trying to take advantage of the java8 functional programing features 
+and make your big data life easier. 
 
 the datastream is based on the cascading framework 
 http://www.cascading.org/
