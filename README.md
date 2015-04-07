@@ -30,3 +30,8 @@ writeTo(new URI("data/output/mapped.dat"), ",");
 Believe me, if might need to write over 1k lines of code to do exact the samething with map reduce to make it run
 and couple of hundrends of line of code in cascading as well. 
 
+##About me 
+kenny li(zhenqi li) 
+[About me]https://www.linkedin.com/profile/view?id=48862722&trk=hp-identity-photo
+
+
