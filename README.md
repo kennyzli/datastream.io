@@ -17,3 +17,8 @@ http://www.cascading.org/
 
 for details information shoot me email at kenny.zlee@gmail.com
 
+Here is the example to make the datastream run locally. :)
+```java
+DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
+stream.mapTo("county", "OtherCountry", x -> x + ":newData").writeTo(new URI("data/output/mapped.dat"), ",");
+```
