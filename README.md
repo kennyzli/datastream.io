@@ -16,9 +16,13 @@ the datastream is based on the cascading framework
 http://www.cascading.org/
 
 for details information shoot me email at kenny.zlee@gmail.com
+as this project is still on early stage, I need to work with team 
+to make it pefect. the interface is intend to chang here. I hope we would have
+first minor release in few month 
 
 Here is the example to make the datastream run locally. :)
 ```java
 DataStream<StreamData> stream = builder.source(new URI("data/input/sample.csv")).build();
-stream.mapTo("county", "OtherCountry", x -> x + ":newData").writeTo(new URI("data/output/mapped.dat"), ",");
+stream.mapTo("county", "OtherCountry", x -> x + ":newData").
+writeTo(new URI("data/output/mapped.dat"), ",");
 ```
