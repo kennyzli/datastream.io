@@ -15,7 +15,7 @@ import java.util.function.Predicate;
  * @param <T>
  */
 public interface DataStream<T> {
-    
+
     /**
      * Group by data fields list
      * 
@@ -108,7 +108,7 @@ public interface DataStream<T> {
      * @param rightStream
      * @return new Stream
      */
-    public DataStream<T> leftJoin(DataStream<T> rightStream);
+    public DataStream<T> leftJoin(DataStream<T> rightStream, String[] commonFields, String... resultFields);
 
     /**
      * Right join the stream and return the new stream with the element type
@@ -116,20 +116,20 @@ public interface DataStream<T> {
      * @param rightStream
      * @return new Stream
      */
-    public DataStream<T> rightJoin(DataStream<T> rightStream);
+    public DataStream<T> rightJoin(DataStream<T> rightStream, String[] commonFields, String... resultFields);
 
     /**
      * outer join the stream and return the new stream with the element type <T>
      * 
      * @return
      */
-    public DataStream<T> outerJoin(DataStream<T> rightStream);
+    public DataStream<T> outerJoin(DataStream<T> rightStream, String[] commonFields, String... resultFields);
 
     /*
      * 
      * Right join the stream and return the elements
      */
-    public DataStream<T> innerJoin(DataStream<T> rightStream);
+    public DataStream<T> innerJoin(DataStream<T> rightStream, String[] commonFields, String... resultFields);
 
     /**
      * Write the data to the output location

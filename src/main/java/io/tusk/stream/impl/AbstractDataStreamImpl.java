@@ -144,25 +144,29 @@ public abstract class AbstractDataStreamImpl implements DataStream<StreamData> {
     }
 
     @Override
-    public DataStream<StreamData> leftJoin(DataStream<StreamData> rightStream) {
+    public DataStream<StreamData> leftJoin(DataStream<StreamData> rightStream, String[] commonFields,
+            String... resultFields) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public DataStream<StreamData> rightJoin(DataStream<StreamData> rightStream) {
+    public DataStream<StreamData> rightJoin(DataStream<StreamData> rightStream, String[] commonFields,
+            String... resultFields) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public DataStream<StreamData> innerJoin(DataStream<StreamData> rightStream) {
+    public DataStream<StreamData> innerJoin(DataStream<StreamData> rightStream, String[] commonFields,
+            String... resultFields) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public DataStream<StreamData> outerJoin(DataStream<StreamData> rightStream) {
+    public DataStream<StreamData> outerJoin(DataStream<StreamData> rightStream, String[] commonFields,
+            String... resultFields) {
         // TODO Auto-generated method stub
         return null;
     }

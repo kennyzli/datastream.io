@@ -65,7 +65,6 @@ public class LocalStreamTest {
         stream.discard("county", "statecode").writeTo(new URI("data/output/discard.csv"), ",");
     }
 
-
     @Test
     public void testDataStreamWithGroupByCount() throws URISyntaxException {
         DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
