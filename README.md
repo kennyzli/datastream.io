@@ -4,7 +4,7 @@
 Big data is alwasy awesome. But writing hadoop is terrible with mapper, reducer
 combiner. why don't we make our distributed hadoop life easier and give the power back to 
 java developers? 
-Impired by twitter's scalding, 
+Imspired by twitter's scalding, 
  https://github.com/twitter/scalding
 
 scala is nice language to work with but not highly adopted by java development community. 
