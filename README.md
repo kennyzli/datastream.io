@@ -4,7 +4,7 @@
 Big data is alwasy awesome. But writing hadoop is terrible with mapper, reducer
 combiner. why don't we make our distributed hadoop life easier and give the power back to 
 java developers? 
-Imspired by twitter's scalding, 
+Inspired by twitter's scalding, 
  https://github.com/twitter/scalding
 
 scala is nice language to work with but not highly adopted by java development community. 
@@ -17,7 +17,7 @@ http://www.cascading.org/
 
 for details information shoot me email at kenny.zlee@gmail.com
 as this project is still on early stage, I need to work with team 
-to make it pefect. the interface is intend to chang here. I hope we would have
+to make it pefect. the interface is intend to change here. I hope we would have
 first minor release in few month 
 
 Here is the example to make the datastream run locally. :)
