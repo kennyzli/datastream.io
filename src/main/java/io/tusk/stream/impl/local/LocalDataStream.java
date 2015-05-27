@@ -1,5 +1,6 @@
 package io.tusk.stream.impl.local;
 
+import io.tusk.stream.DataStream;
 import io.tusk.stream.GroupByDataStream;
 import io.tusk.stream.StreamData;
 import io.tusk.stream.StreamSource;
@@ -32,6 +33,11 @@ public class LocalDataStream extends AbstractDataStreamImpl {
 
     public LocalDataStream(LocalDataStream stream) {
         super(stream);
+    }
+
+    @Override
+    protected DataStream<StreamData> createNewStream() {
+        return new LocalDataStream(this);
     }
 
     public LocalDataStream(String name, LocalStreamSource dataSource) {

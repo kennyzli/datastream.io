@@ -18,12 +18,17 @@ import cascading.flow.FlowDef;
 import cascading.operation.DebugLevel;
 import cascading.operation.filter.Limit;
 import cascading.operation.filter.Sample;
+import cascading.pipe.CoGroup;
 import cascading.pipe.Each;
 import cascading.pipe.Pipe;
 import cascading.pipe.assembly.Discard;
 import cascading.pipe.assembly.Rename;
 import cascading.pipe.assembly.Retain;
 import cascading.pipe.assembly.Unique;
+import cascading.pipe.joiner.InnerJoin;
+import cascading.pipe.joiner.LeftJoin;
+import cascading.pipe.joiner.OuterJoin;
+import cascading.pipe.joiner.RightJoin;
 import cascading.tap.Tap;
 import cascading.tuple.Fields;
 
@@ -143,32 +148,74 @@ public abstract class AbstractDataStreamImpl implements DataStream<StreamData> {
         return null;
     }
 
+    protected abstract DataStream<StreamData> createNewStream();
+
     @Override
     public DataStream<StreamData> leftJoin(DataStream<StreamData> rightStream, String[] commonFields,
             String... resultFields) {
-        // TODO Auto-generated method stub
-        return null;
+        Fields commonField = new Fields(commonFields);
+
+        Fields outputFields = Fields.ALL;
+        if (resultFields != null && resultFields.length > 0) {
+            outputFields = new Fields(resultFields);
+        }
+        Pipe pipe = ((AbstractDataStreamImpl) rightStream).getPipes().getLast();
+
+        Pipe leftJoin = new CoGroup(pipes.getLast(), commonField, pipe, outputFields, new LeftJoin());
+        pipes.add(leftJoin);
+        setPipes(pipes);
+        return createNewStream();
     }
 
     @Override
     public DataStream<StreamData> rightJoin(DataStream<StreamData> rightStream, String[] commonFields,
             String... resultFields) {
-        // TODO Auto-generated method stub
-        return null;
+        Fields commonField = new Fields(commonFields);
+
+        Fields outputFields = Fields.ALL;
+        if (resultFields != null && resultFields.length > 0) {
+            outputFields = new Fields(resultFields);
+        }
+        Pipe pipe = ((AbstractDataStreamImpl) rightStream).getPipes().getLast();
+
+        Pipe rightJoin = new CoGroup(pipes.getLast(), commonField, pipe, outputFields, new RightJoin());
+        pipes.add(rightJoin);
+        setPipes(pipes);
+        return createNewStream();
     }
 
     @Override
     public DataStream<StreamData> innerJoin(DataStream<StreamData> rightStream, String[] commonFields,
             String... resultFields) {
-        // TODO Auto-generated method stub
-        return null;
+        Fields commonField = new Fields(commonFields);
+
+        Fields outputFields = Fields.ALL;
+        if (resultFields != null && resultFields.length > 0) {
+            outputFields = new Fields(resultFields);
+        }
+        Pipe pipe = ((AbstractDataStreamImpl) rightStream).getPipes().getLast();
+
+        Pipe innerJoin = new CoGroup(pipes.getLast(), commonField, pipe, outputFields, new InnerJoin());
+        pipes.add(innerJoin);
+        setPipes(pipes);
+        return createNewStream();
     }
 
     @Override
     public DataStream<StreamData> outerJoin(DataStream<StreamData> rightStream, String[] commonFields,
             String... resultFields) {
-        // TODO Auto-generated method stub
-        return null;
+        Fields commonField = new Fields(commonFields);
+
+        Fields outputFields = Fields.ALL;
+        if (resultFields != null && resultFields.length > 0) {
+            outputFields = new Fields(resultFields);
+        }
+        Pipe pipe = ((AbstractDataStreamImpl) rightStream).getPipes().getLast();
+
+        Pipe outerJoin = new CoGroup(pipes.getLast(), commonField, pipe, outputFields, new OuterJoin());
+        pipes.add(outerJoin);
+        setPipes(pipes);
+        return createNewStream();
     }
 
     @Override

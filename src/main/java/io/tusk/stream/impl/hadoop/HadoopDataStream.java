@@ -1,5 +1,6 @@
 package io.tusk.stream.impl.hadoop;
 
+import io.tusk.stream.DataStream;
 import io.tusk.stream.GroupByDataStream;
 import io.tusk.stream.StreamData;
 import io.tusk.stream.StreamSource;
@@ -32,6 +33,11 @@ public class HadoopDataStream extends AbstractDataStreamImpl {
 
     public HadoopDataStream(HadoopDataStream stream) {
         super(stream);
+    }
+
+    @Override
+    protected DataStream<StreamData> createNewStream() {
+        return new HadoopDataStream(this);
     }
 
     public HadoopDataStream(String name, HadoopStreamSource dataSource) {

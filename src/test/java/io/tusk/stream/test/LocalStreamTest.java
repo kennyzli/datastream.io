@@ -109,12 +109,22 @@ public class LocalStreamTest {
 
     @Test
     public void testDataStreamWithLeftJoinLocalMode() throws URISyntaxException {
-
+        DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
+                RUNTIME_MODE.LOCAL_MODE);
+        DataStream<StreamData> leftStream = builder.source(new URI("data/input/sample.csv")).build();
+        DataStream<StreamData> rightStream = builder.source(new URI("data/input/right_sample_data.csv")).build();
+        DataStream<StreamData> mergedString = leftStream.leftJoin(rightStream, new String[] { "policyID" });
+        mergedString.writeTo(new URI("data/output/leftjoin.csv"), ",");
     }
 
     @Test
     public void testDataStreamWithInnerJoinLocalMode() throws URISyntaxException {
-
+        DataStreamBuilder builder = DataStreamBuilder.getBuilder(BUILDER_TYPE.CSV_STREAM_BUILDER,
+                RUNTIME_MODE.LOCAL_MODE);
+        DataStream<StreamData> leftStream = builder.source(new URI("data/input/sample.csv")).build();
+        DataStream<StreamData> rightStream = builder.source(new URI("data/input/right_sample_data.csv")).build();
+        DataStream<StreamData> mergedString = leftStream.innerJoin(rightStream, new String[] { "policyID" });
+        mergedString.writeTo(new URI("data/output/leftjoin.csv"), ",");
     }
 
     @Test
